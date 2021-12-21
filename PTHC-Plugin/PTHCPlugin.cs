@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.NetModules;
 using Terraria.Localization;
+using Terraria.Net;
 using TerrariaApi.Server;
 using TShockAPI;
 
@@ -36,6 +39,7 @@ namespace PTHC_Plugin
             var communicator = new Communicator();
             CommunicatorThread = new Thread(communicator.Start);
             Instance = this;
+            _ticks = TicksBetweenPings;
         }
 
         /// <summary>
@@ -137,12 +141,10 @@ namespace PTHC_Plugin
             }
 
 
-            if (alivePlayers < 2)
-            {
-                Communicator.AnnounceWinner(latestAlivePlayer.Account.Name);
-                Console.WriteLine("Winner: " + latestAlivePlayer.Name);
-                shutdownServer("PTHC Ended, Winner: " + latestAlivePlayer.Name);
-            }
+            if (alivePlayers >= 2) return;
+            Communicator.AnnounceWinner(latestAlivePlayer.Account.Name);
+            Console.WriteLine("Winner: " + latestAlivePlayer.Name);
+            shutdownServer("PTHC Ended, Winner: " + latestAlivePlayer.Name);
         }
 
         private void OnPlayerDeath(object sender, GetDataHandlers.KillMeEventArgs args)
@@ -171,62 +173,78 @@ namespace PTHC_Plugin
             }
 
 
-            if (alivePlayers < 2)
+            if (alivePlayers >= 2) return;
+            Communicator.AnnounceWinner(latestAlivePlayer.Account.Name);
+            Console.WriteLine("Winner: " + latestAlivePlayer.Name);
+            shutdownServer("PTHC Ended, Winner: " + latestAlivePlayer.Name);
+        }
+        
+        private const int TicksBetweenPings = 60 * 30;
+        private const int MinimumRemainingPlayers = 3;
+        
+        private int _ticks;
+        
+        private static void Ping()
+        {
+            if (TShock.Players.Count(p => p.RealPlayer && !p.Dead) > MinimumRemainingPlayers) return;
             {
-                Communicator.AnnounceWinner(latestAlivePlayer.Account.Name);
-                Console.WriteLine("Winner: " + latestAlivePlayer.Name);
-                shutdownServer("PTHC Ended, Winner: " + latestAlivePlayer.Name);
+                TShock.Utils.Broadcast("The location of all players has been revealed on the map.", Color.Teal);
+                foreach (var p in TShock.Players.Where(p => p.RealPlayer && !p.Dead))
+                {
+                    var packet = NetPingModule.Serialize(new Vector2(p.TileX, p.TileY));
+                    NetManager.Instance.Broadcast(packet);
+                }
             }
         }
-
+        
         private void OnUpdate(EventArgs args)
         {
-            if (GraceLengthMillis > 0 && _graceStartMillis > 0 && _inGrace)
+            if (GraceLengthMillis <= 0 || _graceStartMillis <= 0 || !_inGrace) return;
+            _ticks--;
+            if (_ticks <= 0) 
+                Ping();
+            _ticks = TicksBetweenPings;
+            var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            var timeDiff = now - _graceStartMillis;
+
+            if (now >= _lastSend + 1000)
             {
-                var now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                var timeDiff = now - _graceStartMillis;
+                _lastSend = now;
+                var time = TimeSpan.FromMilliseconds(GraceLengthMillis - timeDiff);
 
-                if (now >= _lastSend + 1000)
+                foreach (var player in TShock.Players)
                 {
-                    _lastSend = now;
-                    var time = TimeSpan.FromMilliseconds(GraceLengthMillis - timeDiff);
+                    if (!player.RealPlayer) continue;
+                    player.SendData(PacketTypes.Status,
+                        $"\n \n \n \n \n \n \n \n \n \n Grace period ends:\n[c/{Color.LightGreen.Hex3()}:{time:mm\\:ss}]",
+                        0, 1);
+                }
+            }
 
-                    foreach (var player in TShock.Players)
-                    {
-                        if (!player.RealPlayer) continue;
-                        player.SendData(PacketTypes.Status,
-                            $"\n \n \n \n \n \n \n \n \n \n Grace period ends:\n[c/{Color.LightGreen.Hex3()}:{time:mm\\:ss}]",
-                            0, 1);
-                    }
+            // If difference between now and start is equal or larger than the length, cancel grace
+            if (timeDiff < GraceLengthMillis) return;
+            {
+                _inGrace = false;
+                var playerCount = 0;
+                foreach (var player in TShock.Players)
+                {
+                    if (!player.RealPlayer) continue;
+
+                    Main.player[player.Index].hostile = true;
+                    NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, null, player.Index);
+                    playerCount++;
                 }
 
-                // If difference between now and start is equal or larger than the length, cancel grace
-                if (timeDiff < GraceLengthMillis) return;
-                {
-                    _inGrace = false;
-                    var playerCount = 0;
-                    foreach (var player in TShock.Players)
-                    {
-                        if (!player.RealPlayer) continue;
+                TSPlayer.All.SendMessage("Grace has ended!", Color.Red);
 
-                        Main.player[player.Index].hostile = true;
-                        NetMessage.SendData((int) PacketTypes.TogglePvp, -1, -1, null, player.Index);
-                        playerCount++;
-                    }
-
-                    TSPlayer.All.SendMessage("Grace has ended!", Color.Red);
-
-                    if (playerCount < 2)
-                    {
-                        Communicator.AnnounceWinner("null");
-                        Console.WriteLine("Grace ended with 1 or no players");
-                        shutdownServer("Grace ended with 1 or no players");
-                    }
-                }
+                if (playerCount >= 2) return;
+                Communicator.AnnounceWinner("null");
+                Console.WriteLine("Grace ended with 1 or no players");
+                shutdownServer("Grace ended with 1 or no players");
             }
         }
 
-        private void OnPlayerInfo(object sender, GetDataHandlers.PlayerInfoEventArgs args)
+        private static void OnPlayerInfo(object sender, GetDataHandlers.PlayerInfoEventArgs args)
         {
             if (args.Difficulty == 2) return;
             args.Player.Kick("You must be using a hardcore character", true, false, null, true);
@@ -253,113 +271,119 @@ namespace PTHC_Plugin
             var reader = new BinaryReader(new MemoryStream(args.Msg.readBuffer, args.Index, args.Length));
             var playerIndex = args.Msg.whoAmI;
 
-            if (args.MsgID == PacketTypes.ConnectRequest)
+            switch (args.MsgID)
             {
-                var version = reader.ReadString();
-
-                if (version != "Terraria" + Main.curRelease)
+                case PacketTypes.ConnectRequest:
                 {
-                    NetMessage.BootPlayer(playerIndex,
-                        new NetworkText("You are using a different version than the server", NetworkText.Mode.Literal));
-                    return;
-                }
+                    var version = reader.ReadString();
 
-                if (!_inGrace)
-                {
-                    NetMessage.BootPlayer(playerIndex, new NetworkText("Grace has ended", NetworkText.Mode.Literal));
-                    return;
-                }
-
-                NetMessage.SendData((int) PacketTypes.PasswordRequired, playerIndex);
-                Netplay.Clients[playerIndex].State = -1;
-
-                args.Handled = true;
-            }
-            else if (args.MsgID == PacketTypes.PasswordSend)
-            {
-                var password = reader.ReadString();
-
-                Console.WriteLine(password);
-
-                PendingUsers.Add(playerIndex);
-                Communicator.SendUserApprovalRequest(password, playerIndex);
-                args.Handled = true;
-            }
-            else if (args.MsgID == PacketTypes.ContinueConnecting2)
-            {
-                if (AuthenticatedUsers.TryGetValue(playerIndex, out _))
-                {
-                    Netplay.Clients[playerIndex].State = 2;
-                    NetMessage.SendData((int) PacketTypes.WorldInfo, playerIndex);
-
-                    // Need to move this code somewhere else, this is such a mess
-
-                    var player = TShock.Players[playerIndex];
-
-                    if (player == null)
+                    if (version != "Terraria" + Main.curRelease)
                     {
-                        Console.WriteLine("player null");
+                        NetMessage.BootPlayer(playerIndex,
+                            new NetworkText("You are using a different version than the server", NetworkText.Mode.Literal));
                         return;
                     }
 
-                    if (!AuthenticatedUsers.TryGetValue(playerIndex, out var username))
-                        player.Disconnect("Error getting discord id!");
-
-                    var account = TShock.UserAccounts.GetUserAccountByName(username);
-
-                    account.Group = TShock.Config.Settings.DefaultRegistrationGroupName;
-                    account.UUID = player.UUID;
-
-                    player.PlayerData = TShock.CharacterDB.GetPlayerData(player, account.ID);
-
-                    player.Group = TShock.Groups.GetGroupByName(account.Group);
-                    player.tempGroup = null;
-                    player.Account = account;
-                    player.IsLoggedIn = true;
-                    player.IsDisabledForSSC = false;
-
-                    if (Main.ServerSideCharacter)
+                    if (!_inGrace)
                     {
-                        if (player.HasPermission(Permissions.bypassssc))
-                        {
-                            player.PlayerData.CopyCharacter(player);
-                            TShock.CharacterDB.InsertPlayerData(player);
-                        }
-
-                        Console.WriteLine("Restoring player data");
-                        player.PlayerData.RestoreCharacter(player);
+                        NetMessage.BootPlayer(playerIndex, new NetworkText("Grace has ended", NetworkText.Mode.Literal));
+                        return;
                     }
 
-                    player.LoginFailsBySsi = false;
+                    NetMessage.SendData((int) PacketTypes.PasswordRequired, playerIndex);
+                    Netplay.Clients[playerIndex].State = -1;
 
-                    if (player.HasPermission(Permissions.ignorestackhackdetection))
-                        player.IsDisabledForStackDetection = false;
-
-                    if (player.HasPermission(Permissions.usebanneditem))
-                        player.IsDisabledForBannedWearable = false;
-
-                    TShock.Log.ConsoleInfo(player.Name + " authenticated successfully as user: " + account.Name + ".");
-                    if (player.LoginHarassed && TShock.Config.Settings.RememberLeavePos)
-                    {
-                        if (TShock.RememberedPos.GetLeavePos(player.Name, player.IP) != Vector2.Zero)
-                        {
-                            var pos = TShock.RememberedPos.GetLeavePos(player.Name, player.IP);
-                            player.Teleport((int) pos.X * 16, (int) pos.Y * 16);
-                        }
-
-                        player.LoginHarassed = false;
-                    }
-
-                    TShock.UserAccounts.SetUserAccountUUID(account, player.UUID);
+                    args.Handled = true;
+                    break;
                 }
-                else
+                case PacketTypes.PasswordSend:
                 {
-                    NetMessage.BootPlayer(playerIndex,
-                        new NetworkText("Error, contact staff", NetworkText.Mode.Literal));
-                    Console.WriteLine("Couldn't get authenticatedUser, is this player hacking?");
-                }
+                    var password = reader.ReadString();
 
-                args.Handled = true;
+                    Console.WriteLine(password);
+
+                    PendingUsers.Add(playerIndex);
+                    Communicator.SendUserApprovalRequest(password, playerIndex);
+                    args.Handled = true;
+                    break;
+                }
+                case PacketTypes.ContinueConnecting2:
+                {
+                    if (AuthenticatedUsers.TryGetValue(playerIndex, out _))
+                    {
+                        Netplay.Clients[playerIndex].State = 2;
+                        NetMessage.SendData((int) PacketTypes.WorldInfo, playerIndex);
+
+                        // Need to move this code somewhere else, this is such a mess
+
+                        var player = TShock.Players[playerIndex];
+
+                        if (player == null)
+                        {
+                            Console.WriteLine("player null");
+                            return;
+                        }
+
+                        if (!AuthenticatedUsers.TryGetValue(playerIndex, out var username))
+                            player.Disconnect("Error getting discord id!");
+
+                        var account = TShock.UserAccounts.GetUserAccountByName(username);
+
+                        account.Group = TShock.Config.Settings.DefaultRegistrationGroupName;
+                        account.UUID = player.UUID;
+
+                        player.PlayerData = TShock.CharacterDB.GetPlayerData(player, account.ID);
+
+                        player.Group = TShock.Groups.GetGroupByName(account.Group);
+                        player.tempGroup = null;
+                        player.Account = account;
+                        player.IsLoggedIn = true;
+                        player.IsDisabledForSSC = false;
+
+                        if (Main.ServerSideCharacter)
+                        {
+                            if (player.HasPermission(Permissions.bypassssc))
+                            {
+                                player.PlayerData.CopyCharacter(player);
+                                TShock.CharacterDB.InsertPlayerData(player);
+                            }
+
+                            Console.WriteLine("Restoring player data");
+                            player.PlayerData.RestoreCharacter(player);
+                        }
+
+                        player.LoginFailsBySsi = false;
+
+                        if (player.HasPermission(Permissions.ignorestackhackdetection))
+                            player.IsDisabledForStackDetection = false;
+
+                        if (player.HasPermission(Permissions.usebanneditem))
+                            player.IsDisabledForBannedWearable = false;
+
+                        TShock.Log.ConsoleInfo(player.Name + " authenticated successfully as user: " + account.Name + ".");
+                        if (player.LoginHarassed && TShock.Config.Settings.RememberLeavePos)
+                        {
+                            if (TShock.RememberedPos.GetLeavePos(player.Name, player.IP) != Vector2.Zero)
+                            {
+                                var pos = TShock.RememberedPos.GetLeavePos(player.Name, player.IP);
+                                player.Teleport((int) pos.X * 16, (int) pos.Y * 16);
+                            }
+
+                            player.LoginHarassed = false;
+                        }
+
+                        TShock.UserAccounts.SetUserAccountUUID(account, player.UUID);
+                    }
+                    else
+                    {
+                        NetMessage.BootPlayer(playerIndex,
+                            new NetworkText("Error, contact staff", NetworkText.Mode.Literal));
+                        Console.WriteLine("Couldn't get authenticatedUser, is this player hacking?");
+                    }
+
+                    args.Handled = true;
+                    break;
+                }
             }
         }
 
