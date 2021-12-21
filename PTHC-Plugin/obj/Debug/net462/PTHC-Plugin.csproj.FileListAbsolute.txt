@@ -1,0 +1,4 @@
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net462/PTHC-Plugin.csproj.AssemblyReference.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net462/PTHC-Plugin.AssemblyInfoInputs.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net462/PTHC-Plugin.AssemblyInfo.cs
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net462/PTHC-Plugin.csproj.CoreCompileInputs.cache

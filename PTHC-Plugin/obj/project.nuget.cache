@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "l7/YYbYxLef15OdR0+STo+F45Su+vt9aXXVMoyGE2gsDw3NXoPOvweFF8Cz+HtxJfW3UtMa3p391giQ2k6fWmw==",
+  "success": true,
+  "projectFilePath": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/PTHC-Plugin.csproj",
+  "expectedPackageFiles": [
+    "/home/aang/.nuget/packages/bcrypt.net/0.1.0/bcrypt.net.0.1.0.nupkg.sha512",
+    "/home/aang/.nuget/packages/mysql.data/6.9.8/mysql.data.6.9.8.nupkg.sha512",
+    "/home/aang/.nuget/packages/newtonsoft.json/10.0.3/newtonsoft.json.10.0.3.nupkg.sha512",
+    "/home/aang/.nuget/packages/terrariaserver.tshock/4.5.5/terrariaserver.tshock.4.5.5.nupkg.sha512"
+  ],
+  "logs": []
+}

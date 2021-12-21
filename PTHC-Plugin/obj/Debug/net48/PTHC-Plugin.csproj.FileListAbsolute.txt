@@ -1,0 +1,17 @@
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net48/PTHC-Plugin.csproj.AssemblyReference.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net48/PTHC-Plugin.AssemblyInfoInputs.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net48/PTHC-Plugin.AssemblyInfo.cs
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net48/PTHC-Plugin.csproj.CoreCompileInputs.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/PTHC-Plugin.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/PTHC-Plugin.pdb
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/BCrypt.Net.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/MySql.Data.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/Newtonsoft.Json.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/HttpServer.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/Mono.Data.Sqlite.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/OTAPI.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/TShockAPI.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/TerrariaServer.exe
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net48/PTHC-Plugin.csproj.CopyComplete
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net48/PTHC-Plugin.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net48/PTHC-Plugin.pdb

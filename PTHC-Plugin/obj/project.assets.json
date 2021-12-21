@@ -1,0 +1,187 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.8": {
+      "BCrypt.Net/0.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net35/BCrypt.Net.dll": {}
+        },
+        "runtime": {
+          "lib/net35/BCrypt.Net.dll": {}
+        }
+      },
+      "MySql.Data/6.9.8": {
+        "type": "package",
+        "compile": {
+          "lib/net45/MySql.Data.dll": {}
+        },
+        "runtime": {
+          "lib/net45/MySql.Data.dll": {}
+        }
+      },
+      "Newtonsoft.Json/10.0.3": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "TerrariaServer.TShock/4.5.5": {
+        "type": "package",
+        "dependencies": {
+          "BCrypt.Net": "0.1.0",
+          "MySql.Data": "6.9.8",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "compile": {
+          "lib/net452/HttpServer.dll": {},
+          "lib/net452/Mono.Data.Sqlite.dll": {},
+          "lib/net452/OTAPI.dll": {},
+          "lib/net452/TShockAPI.dll": {},
+          "lib/net452/TerrariaServer.exe": {}
+        },
+        "runtime": {
+          "lib/net452/HttpServer.dll": {},
+          "lib/net452/Mono.Data.Sqlite.dll": {},
+          "lib/net452/OTAPI.dll": {},
+          "lib/net452/TShockAPI.dll": {},
+          "lib/net452/TerrariaServer.exe": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BCrypt.Net/0.1.0": {
+      "sha512": "sST2w361Dxt9GGMfpOTiK50wXGV64Ybb1hiX3xjEWnhVYZNF43NuySGwADJa7X1R+bA53NsFR+tuDxcYiJeIOA==",
+      "type": "package",
+      "path": "bcrypt.net/0.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bcrypt.net.0.1.0.nupkg.sha512",
+        "bcrypt.net.nuspec",
+        "lib/net35/BCrypt.Net.XML",
+        "lib/net35/BCrypt.Net.dll"
+      ]
+    },
+    "MySql.Data/6.9.8": {
+      "sha512": "ZSkMKsB1J9Cb/nO3+GlfX/YttibU23y5ZQtn/xzzl3xfPK512wP1jNjiVG4AFvmeJrf02qHNc/GfXJGYYHN8Pg==",
+      "type": "package",
+      "path": "mysql.data/6.9.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGES",
+        "Readme.txt",
+        "content/app.config.transform",
+        "content/web.config.transform",
+        "lib/net20-cf/MySql.Data.CF.dll",
+        "lib/net20/MySql.Data.dll",
+        "lib/net40/MySql.Data.dll",
+        "lib/net45/MySql.Data.dll",
+        "mysql.data.6.9.8.nupkg.sha512",
+        "mysql.data.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/10.0.3": {
+      "sha512": "hSXaFmh7hNCuEoC4XNY5DrRkLDzYHqPx/Ik23R4J86Z7PE/Y6YidhG602dFVdLBRSdG6xp9NabH3dXpcoxWvww==",
+      "type": "package",
+      "path": "newtonsoft.json/10.0.3",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.10.0.3.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "tools/install.ps1"
+      ]
+    },
+    "TerrariaServer.TShock/4.5.5": {
+      "sha512": "Z7y8GRPpI9RnKoKPb7HSWnUzzyZ307UGfe8UfWG2Af5G9aQzyjOzeNsv/ZqLq8k9p7+15Lodo/no3t2tApq7jQ==",
+      "type": "package",
+      "path": "terrariaserver.tshock/4.5.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/HttpServer.dll",
+        "lib/net452/Mono.Data.Sqlite.dll",
+        "lib/net452/OTAPI.dll",
+        "lib/net452/TShockAPI.dll",
+        "lib/net452/TerrariaServer.exe",
+        "terrariaserver.tshock.4.5.5.nupkg.sha512",
+        "terrariaserver.tshock.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.8": [
+      "TerrariaServer.TShock >= 4.5.5"
+    ]
+  },
+  "packageFolders": {
+    "/home/aang/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/PTHC-Plugin.csproj",
+      "projectName": "PTHC-Plugin",
+      "projectPath": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/PTHC-Plugin.csproj",
+      "packagesPath": "/home/aang/.nuget/packages/",
+      "outputPath": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/home/aang/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net48"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net48": {
+        "targetAlias": "net48",
+        "dependencies": {
+          "TerrariaServer.TShock": {
+            "target": "Package",
+            "version": "[4.5.5, )"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/lib/mono/msbuild/Current/bin/RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

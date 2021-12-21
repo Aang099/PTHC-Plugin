@@ -1,0 +1,51 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/PTHC-Plugin.csproj": {}
+  },
+  "projects": {
+    "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/PTHC-Plugin.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/PTHC-Plugin.csproj",
+        "projectName": "PTHC-Plugin",
+        "projectPath": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/PTHC-Plugin.csproj",
+        "packagesPath": "/home/aang/.nuget/packages/",
+        "outputPath": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/aang/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net48"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net48": {
+            "targetAlias": "net48",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net48": {
+          "targetAlias": "net48",
+          "dependencies": {
+            "TerrariaServer.TShock": {
+              "target": "Package",
+              "version": "[4.5.5, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/mono/msbuild/Current/bin/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

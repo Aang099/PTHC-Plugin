@@ -1,0 +1,12 @@
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/PTHC-Plugin.csproj.AssemblyReference.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/PTHC-Plugin.GeneratedMSBuildEditorConfig.editorconfig
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/PTHC-Plugin.AssemblyInfoInputs.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/PTHC-Plugin.AssemblyInfo.cs
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/PTHC-Plugin.csproj.CoreCompileInputs.cache
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net6.0/PTHC-Plugin.deps.json
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net6.0/PTHC-Plugin.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net6.0/ref/PTHC-Plugin.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net6.0/PTHC-Plugin.pdb
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/PTHC-Plugin.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/ref/PTHC-Plugin.dll
+/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/Debug/net6.0/PTHC-Plugin.pdb
