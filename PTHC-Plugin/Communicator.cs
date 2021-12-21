@@ -26,7 +26,6 @@ namespace PTHC_Plugin
             _client?.Connect("127.0.0.1", 8989);
             _stream = _client?.GetStream();
 
-
             while (_running)
                 try
                 {
@@ -54,12 +53,12 @@ namespace PTHC_Plugin
 
         public static void SendUserApprovalRequest(string userId, int playerIndex)
         {
-            SendMessage(OutMessageTypes.RequestUserApproval, new[] {userId, playerIndex.ToString()});
+            SendMessage(OutMessageTypes.REQUESTUSERAPPROVAL, new[] {userId, playerIndex.ToString()});
         }
 
         public static void AnnounceWinner(string discordId)
         {
-            SendMessage(OutMessageTypes.AnnounceWinner, new[] {discordId});
+            SendMessage(OutMessageTypes.ANNOUNCEWINNER, new[] {discordId});
         }
 
         private static void SendMessage(OutMessageTypes type, string[] args)
@@ -88,10 +87,10 @@ namespace PTHC_Plugin
 
             switch (type)
             {
-                case InMessageTypes.UserApprovalResponse:
+                case InMessageTypes.USERAPPROVALRESPONSE:
                     Handler.HandleUserApprovalResponse(args[0], int.Parse(args[1]));
                     break;
-                case InMessageTypes.SetGraceTime:
+                case InMessageTypes.SETGRACETIME:
                     Handler.HandleSetGraceTime(int.Parse(args[0]));
                     break;
                 default:
@@ -116,14 +115,16 @@ namespace PTHC_Plugin
 
         private enum InMessageTypes
         {
-            SetGraceTime,
-            UserApprovalResponse
+            // ReSharper disable InconsistentNaming
+            // ReSharper disable IdentifierTypo
+            SETGRACETIME,
+            USERAPPROVALRESPONSE
         }
 
         private enum OutMessageTypes
         {
-            RequestUserApproval,
-            AnnounceWinner
+            REQUESTUSERAPPROVAL,
+            ANNOUNCEWINNER
         }
     }
 }
