@@ -13,15 +13,9 @@
         "packagesPath": "/home/aang/.nuget/packages/",
         "outputPath": "/home/aang/RiderProjects/pthc_plugin/PTHC-Plugin/obj/",
         "projectStyle": "PackageReference",
-        "configFilePaths": [
-          "/home/aang/.nuget/NuGet/NuGet.Config"
-        ],
         "originalTargetFrameworks": [
           "net48"
         ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
         "frameworks": {
           "net48": {
             "targetAlias": "net48",

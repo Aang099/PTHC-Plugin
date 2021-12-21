@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
@@ -48,7 +49,8 @@ namespace PTHC_Plugin
             _running = false;
             _stream?.Close();
             _client?.Close();
-            PthcPlugin.Instance?.CommunicatorThread.Join();
+            if(PthcPlugin.Instance != null && PthcPlugin.Instance.CommunicatorThread.IsAlive) 
+                PthcPlugin.Instance.CommunicatorThread.Join();
         }
 
         public static void SendUserApprovalRequest(string userId, int playerIndex)
@@ -61,14 +63,14 @@ namespace PTHC_Plugin
             SendMessage(OutMessageTypes.ANNOUNCEWINNER, new[] {discordId});
         }
 
-        private static void SendMessage(OutMessageTypes type, string[] args)
+        private static void SendMessage(OutMessageTypes type, IReadOnlyList<string> args)
         {
             var fullMessage = type + ":";
 
-            for (var i = 0; i < args.Length; i++)
+            for (var i = 0; i < args.Count; i++)
             {
                 fullMessage += args[i];
-                if (i != args.Length - 1) fullMessage += ",";
+                if (i != args.Count - 1) fullMessage += ",";
             }
 
             WriteString(fullMessage + "\n");
