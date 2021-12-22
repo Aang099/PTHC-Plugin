@@ -11,14 +11,21 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <Optimize>true</Optimize>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <DebugType>full</DebugType>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="TerrariaServer.TShock" Version="4.5.5" />
+        <PackageReference Include="TerrariaServer.TShock" Version="4.5.5"/>
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="cp ~/RiderProjects/pthc_plugin/PTHC-Plugin/bin/Debug/net48/PTHC-Plugin.dll ~/Downloads/Tshock/ServerPlugins/PTHC-Plugin.dll"/>
+    </Target>
 
 </Project>

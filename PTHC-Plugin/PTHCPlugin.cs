@@ -43,8 +43,8 @@ namespace PTHC_Plugin
         public override string Description => "A plugin to help manage PTHC's";
 
         public override string Name => "PTHC Manager";
-        
-        public override Version Version => new Version(1, 0, 0, 0);
+
+        public override Version Version => new Version(2, 0, 0, 01);
 
         public override void Initialize()
         {
@@ -242,14 +242,16 @@ namespace PTHC_Plugin
             {
                 case PacketTypes.ConnectRequest:
                 {
-                    var version = reader.ReadString();
-
-                    if (version != "Terraria" + Main.curRelease)
+                    /*var version = reader.ReadString();
+                    
+                    var curRelease = (int)typeof(Main).GetField("curRelease").GetValue(null);
+                    
+                    if (version != "Terraria" + curRelease)
                     {
                         NetMessage.BootPlayer(playerIndex,
                             new NetworkText("You are using a different version than the server", NetworkText.Mode.Literal));
                         return;
-                    }
+                    }*/
 
                     if (!_inGrace)
                     {
